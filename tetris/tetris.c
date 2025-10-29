@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <string.h>
 
 enum Cell {
@@ -54,6 +54,25 @@ static void draw_board(void) {
 }
 
 //다른 함수는 이 아래에 작성해주세요..
+
+void block (int type, int x, int y, char c) {
+    if (type == 0) { //세로4개블록
+        board[y][x] = c;
+        board[y+1][x] = c;
+        board[y+2][x] = c;
+        board[y+3][x] = c;
+    } else if (type == 1) { //가로4개
+        board[y][x] = c;
+        board[y][x+1] = c;
+        board[y][x+2] = c;
+        board[y][x+3] = c;
+    } else if (type == 2) { //2x2
+        board[y][x] = c;
+        board[y][x+1] = c;
+        board[y+1][x] = c;
+        board[y+1][x+1] = c;
+    }
+}
 
 int main(void) {
 	init_board();
