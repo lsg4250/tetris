@@ -116,30 +116,30 @@ int move_down(int type, int x, int y) { // 밑으로 내려갈 수 있는지 확
     return 0;
 }
 
-int move_side(int type, int x, int y, int dir) { // 좌우 이동 가능 확인
+int move_side(int type, int x, int y, int z) { // 좌우 이동 가능 확인
     if (type == 0) { // 세로 4칸
-        if (x + dir < 0 || x + dir >= BOARD_W) return 0;
+        if (x + z < 0 || x + z >= BOARD_W) return 0;
         for (int i = 0; i < 4; i++)
-            if (board[y + i][x + dir] != EMPTY)
+            if (board[y + i][x + z] != EMPTY)
                 return 0;
         return 1;
     }
     if (type == 1) { // 가로 4칸
-        if (dir == -1) { // 왼쪽
+        if (z == -1) { // 왼쪽
             if (x - 1 < 0) return 0;
             return board[y][x - 1] == EMPTY;
         }
-        if (dir == 1) { // 오른쪽
+        if (z == 1) { // 오른쪽
             if (x + 4 >= BOARD_W) return 0;
             return board[y][x + 4] == EMPTY;
         }
     }
     if (type == 2) { // 2x2
-        if (dir == -1) {
+        if (z == -1) {
             if (x - 1 < 0) return 0;
             return (board[y][x - 1] == EMPTY && board[y + 1][x - 1] == EMPTY);
         }
-        if (dir == 1) {
+        if (z == 1) {
             if (x + 2 >= BOARD_W) return 0;
             return (board[y][x + 2] == EMPTY && board[y + 1][x + 2] == EMPTY);
         }
@@ -157,7 +157,7 @@ int block_drop() { // 블록 떨어뜨리기
         draw_board();
 
         if (_kbhit()) {
-            char input = _getch();
+            char input = _getch(); //이거 그냥 인터넷에 실시간입력코드 검색해서 쓴건데 혹시 오류나면? 그냥 바꿀게요..
 
             if (input == 'a' && move_side(type, x, y, -1)) { // 왼쪽
                 block(type, x, y, EMPTY);
