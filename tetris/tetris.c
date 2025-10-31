@@ -153,7 +153,7 @@ int block_drop() { // 블록 떨어뜨리기
     int y = 0;
 
     while (1) {
-        block(type, x, y, WALL);
+        block(type, x, y, '■');
         draw_board();
 
         if (_kbhit()) {
