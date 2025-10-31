@@ -75,102 +75,108 @@ void block (int type, int x, int y, char c) {
     }
 }
 
-void line_remove() { //줄 지우는거
-    for (int i = 0; i < HEIGHT; i++) {
+void line_remove() { // 한줄 차면 지우기
+    for (int i = 0; i < BOARD_H; i++) {
         int full = 1;
-        for (int j = 0; j < WIDTH; j++) {
-            if (board[i][j] == ' ') {
+        for (int j = 0; j < BOARD_W; j++) {
+            if (board[i][j] == EMPTY) {
                 full = 0;
                 break;
             }
         }
+
         if (full) {
             for (int k = i; k > 0; k--) {
-                for (int j = 0; j < WIDTH; j++) {
-                    board[k][j] = board[k-1][j];
+                for (int j = 0; j < BOARD_W; j++) {
+                    board[k][j] = board[k - 1][j];
                 }
             }
-            for (int j = 0; j < WIDTH; j++) board[0][j] = ' ';
+            for (int j = 0; j < BOARD_W; j++)
+                board[0][j] = EMPTY;
         }
     }
 }
 
-int move_down(int type, int x, int y) { //밑으로 내려갈수있는지 확인하기
-    if (type == 0) {
-        if (y+4 >= HEIGHT) return 0;
-        return board[y+4][x] == ' ';
+int move_down(int type, int x, int y) { // 밑으로 내려갈 수 있는지 확인
+    if (type == 0) { // 세로 4칸
+        if (y + 4 >= BOARD_H) return 0;
+        return board[y + 4][x] == EMPTY;
     }
-    if (type == 1) {
-        if (y+1 >= HEIGHT) return 0;
+    if (type == 1) { // 가로 4칸
+        if (y + 1 >= BOARD_H) return 0;
         for (int i = 0; i < 4; i++)
-            if (board[y+1][x+i] != ' ') return 0;
+            if (board[y + 1][x + i] != EMPTY)
+                return 0;
         return 1;
     }
-    if (type == 2) {
-        if (y+2 >= HEIGHT) return 0;
-        return (board[y+2][x] == ' ' && board[y+2][x+1] == ' ');
+    if (type == 2) { // 2x2 블록
+        if (y + 2 >= BOARD_H) return 0;
+        return (board[y + 2][x] == EMPTY && board[y + 2][x + 1] == EMPTY);
     }
     return 0;
 }
 
-int move_side(int type, int x, int y, int z) { //좌우이동가능확인
-    if (type == 0) {
-        if (x+z < 0 || x+z >= WIDTH) return 0;
+int move_side(int type, int x, int y, int dir) { // 좌우 이동 가능 확인
+    if (type == 0) { // 세로 4칸
+        if (x + dir < 0 || x + dir >= BOARD_W) return 0;
         for (int i = 0; i < 4; i++)
-            if (board[y+i][x+z] != ' ') return 0;
+            if (board[y + i][x + dir] != EMPTY)
+                return 0;
         return 1;
     }
-    if (type == 1) {
-        if (z == -1) {
-            if (x-1 < 0) return 0;
-            return board[y][x-1] == ' ';
+    if (type == 1) { // 가로 4칸
+        if (dir == -1) { // 왼쪽
+            if (x - 1 < 0) return 0;
+            return board[y][x - 1] == EMPTY;
         }
-        if (z == 1) {
-            if (x+4 >= WIDTH) return 0;
-            return board[y][x+4] == ' ';
+        if (dir == 1) { // 오른쪽
+            if (x + 4 >= BOARD_W) return 0;
+            return board[y][x + 4] == EMPTY;
         }
     }
-    if (type == 2) {
-        if (z == -1) {
-            if (x-1 < 0) return 0;
-            return (board[y][x-1] == ' ' && board[y+1][x-1] == ' ');
+    if (type == 2) { // 2x2
+        if (dir == -1) {
+            if (x - 1 < 0) return 0;
+            return (board[y][x - 1] == EMPTY && board[y + 1][x - 1] == EMPTY);
         }
-        if (z == 1) {
-            if (x+2 >= WIDTH) return 0;
-            return (board[y][x+2] == ' ' && board[y+1][x+2] == ' ');
+        if (dir == 1) {
+            if (x + 2 >= BOARD_W) return 0;
+            return (board[y][x + 2] == EMPTY && board[y + 1][x + 2] == EMPTY);
         }
     }
     return 0;
 }
 
-int block_drop() { //블록 떨어트리기
+int block_drop() { // 블록 떨어뜨리기
     int type = rand() % 3;
-    int x = WIDTH / 2;
+    int x = BOARD_W / 2;
     int y = 0;
 
     while (1) {
-        block(type, x, y, '■');
+        block(type, x, y, WALL);
         draw_board();
 
         if (_kbhit()) {
-            char input = _getch(); //이거 그냥 인터넷에 실시간입력코드 검색해서 쓴건데 혹시 오류나면? 그냥 바꿀게요..
+            char input = _getch();
 
-            if (input == 'a' && move_side(type, x, y, -1)) {
-                block(type, x, y, ' ');
+            if (input == 'a' && move_side(type, x, y, -1)) { // 왼쪽
+                block(type, x, y, EMPTY);
                 x--;
-            } else if (input == 'd' && move_side(type, x, y, 1)) {
-                block(type, x, y, ' ');
+            } 
+            else if (input == 'd' && move_side(type, x, y, 1)) { // 오른쪽
+                block(type, x, y, EMPTY);
                 x++;
-            } else if (input == 's') {
+            } 
+            else if (input == 's') { // 빠르게 내리기
                 while (move_down(type, x, y)) {
-                    block(type, x, y, ' ');
+                    block(type, x, y, EMPTY);
                     y++;
                 }
             }
         }
 
         if (move_down(type, x, y)) {
-            block(type, x, y, ' ');
+            block(type, x, y, EMPTY);
             y++;
         } else {
             line_remove();
