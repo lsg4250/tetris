@@ -103,7 +103,7 @@ static void line_remove() { // 한줄 차면 지우기
             }
          }
          for (int x = 1; x <= BOARD_W - 2; x++) board[0][x] = EMPTY;
-         score += 10; // ✅ 추가 : 한 줄 지워질 때마다 10점 증가
+         score += 10;
       }
    }
 }
