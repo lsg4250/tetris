@@ -19,6 +19,7 @@ enum Cell {
 #define BOARD_H (INNER_H+1)
 
 int board[BOARD_H][BOARD_W];
+int score = 0;
 
 static const char* CELL_CHARS[] = {
    "  ",  // EMPTY
@@ -61,6 +62,7 @@ static void draw_board(void) {
       }
       printf("\n");
    }
+   printf("\n현재 점수: %d점\n", score); //점수
    fflush(stdout);
 }
 
@@ -101,6 +103,7 @@ static void line_remove() { // 한줄 차면 지우기
             }
          }
          for (int x = 1; x <= BOARD_W - 2; x++) board[0][x] = EMPTY;
+         score += 10; // ✅ 추가 : 한 줄 지워질 때마다 10점 증가
       }
    }
 }
@@ -278,7 +281,8 @@ int main(void) {
 
    while (1) {
       if (!block_move()) {
-         printf("Game Over!\n"); //수정: 다 차면 게임 오버 출력
+         printf("\nGame Over!\n");
+         printf("\n최종 점수: %d점\n", score); //게임 오버 시 총점 출력
          break;
       }
    }
