@@ -220,13 +220,10 @@ int block_move() {
                 break;
 
             case 80: case 's': case 'S':
-                // 아래 방향키 꾹 누르면 블록이 사라지는 문제 수정 ← 수정
-                // 기존 문제: move_down 실패인데도 block(...,EMPTY) 실행됨 → 블록이 사라짐
                 if (move_down(type, x, y)) {      // 이동 가능할 때만
                     block(type, x, y, EMPTY);     // 블록을 지우고
                     y++;                           // y 증가
                 }
-                // 이동 불가능할 때는 아무 작업도 하지 않음 ← 수정
                 break;
 
             case 72: case 'w': case 'W':
