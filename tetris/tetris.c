@@ -1,6 +1,6 @@
 // 기존 코드
 
-/* #include <stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
@@ -290,8 +290,8 @@ int main(void) {
     }
     return 0;
 }
-*/
 
+/*
 // 그래픽 코드드
 
 // SDL 모듈을 사용하기 위한 define 선언
@@ -664,3 +664,4 @@ int main(void) {
     app_quit();
     return 0;
 }
+*/
